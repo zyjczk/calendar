@@ -1,0 +1,15 @@
+记录建站的每一步
+1.确定安装了node环境和npm
+2.安装git，并在github上注册账号创建远端仓库
+    2.a. 运行git init 初始化本地仓库，
+    2.b.git add . 添加文件，
+    2.c.git commit -m "添加备注并提交本地", 
+    2.d.git remote add origin https://github.com/zyjczk/calendar push代码到远端仓库，后面的https为github上的项目地址
+3.npm install vue-cli -g 安装vue脚手架，可以快速方便的构建项目目录
+4.vue init webpack calendar 构建vue项目目录，需要填写一些说明，可忽略，vue-router为单页面应用路由，ESlint是代码检测，后面的是自动化测试模块
+5.进入项目目录CD **，之后安装依赖，npm install
+备注：
+    a. npm run dev 是默认的项目启动命令 
+    b. npm run build 是默认的编译命令即发布项目之前进行压缩
+    c. 如果端口号被占用了可以在config中更改端口号
+至此，前端的项目就可以正式跑起来啦
