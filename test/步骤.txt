@@ -1,4 +1,4 @@
-记录建站的每一步
+﻿记录开发的每一步
 1.确定安装了node环境和npm
 2.安装git，并在github上注册账号创建远端仓库
     2.a. 运行git init 初始化本地仓库，
@@ -13,3 +13,50 @@
     b. npm run build 是默认的编译命令即发布项目之前进行压缩
     c. 如果端口号被占用了可以在config中更改端口号
 至此，前端的项目就可以正式跑起来啦
+git 忽略文件，一般只把package共享到上面，而node_modules比较大，都是在本地安装，因此在提交时可以忽略这个文件夹，具体步骤如下
+    找到项目目录下的.git中的config文件打开，加入excludesfile = E:/profile/calendar/calendar/node_modules（本地文件路径）
+6.项目文件夹说明:
+    dist:压缩后生成的项目文件，由webpack自动生成
+    config:项目配置文件存放位置，如：更改端口号，代理服务配置等
+    node_modules:依赖文件存放处，npm自动生成
+    src:项目主要开发文件，
+            assets：资源存放处，
+            components:组件，
+            router：路由，
+            app.vue项目入口文件，
+            main.js：项目核心文件，全局配置
+下面的开发顺序并没有严格意义上的前后之分，基本在开发时就是想起那里写那里，最后整合到一起就好，为了方便记录，所以加上的编号
+7.创建store做状态管理：其实这一步可以不需要，一般大型复杂的项目才需要单独创建store,小项目可直接使用vue.bus来传递状态，本项目为了练习用的vuex做的管理
+    a.创建store.js文件，并在其中注册vuex
+    b.声明state状态对象以及mutation对state的具体操作
+    c.在app.vue中声明vue实例并注入全局的store
+    PS*:这里有个问题，就是我参考的例子中，是直接由组件调用action的属性，在由action操作mutation改变state，但是似乎vuex2.0中提倡的用法
+    是由组件使用commit(type),来操作action中的某一个动作，在由这个动作异步的调用dispatch操作mutation处理state，鉴于目前项目没必要就没有改
+8.创建路由,在router中配置你的页面跳转配置
+*PS:一个坑，就是如何在vue中引入bootstrap，常规的按理说只要在html启动页面中link引入bootstrap就可以了，但是如果使用webPack的按需加载，则
+有很大可能找不到正确路径下的css文件，此时，需要在main.js下import ‘bootstrap的路径’，因此最好用npm安装bootstrap，如果是自己下载的还需要在配置文件中
+注明引用位置。
+
+数据库相关说明：mysql
+首先是安装mysql,基本来说下一个xampp里面自带mysql的服务，但是有时候直接用xampp启动mysql没有用，还是需要手动启动的
+    a.启动mysql:进入命令行，输入net start mysql 如果提示启动成功则表示安装成功，如果提示服务名错误等则需要手动安装，
+    b.安装mysql：进入mysql的文件夹中的bin文件夹，打开命令行（管理员模式）,输入mysqld --install即可
+    c.进入mysql：启动mysql服务后，输入mysql -u用户名 -p密码即可
+    PS：如果登录不成功可以直接输入mysql匿名登录，查看前面是否安装和启动成功，但是匿名有很多功能不能用（比如创建数据库），还是要重新登录的，
+    一般登录的错误就是ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)，这个需要重置
+    用户名和密码，方法为：
+        PSa.编辑mysql配置文件my.ini（在mysql的安装目录下，我的在D:\Program Files\MySQL\MySQL Server 5.0\my.ini），在[mysqld]这个条目下加入 skip-grant-tables 保存退出后重启mysql
+        PSb.重启mysql(net stop mysql， net start mysql )并进入mysql -u root -p
+        psc.mysql> use mysql; 
+        psD.mysql> update user set password=password("新密码") where user="root"; 
+        pse.mysql> flush privileges;
+        psf.退出并删除第一步添加的那条语句，重启登录即可
+    d.一些常用mysql指令:显示本地数据库（show databases;），创建数据库（create database 数据库名; ），使用数据库（use 数据库名），显示表结构(desc 表名)
+        显示本数据库下所有的表（SHOW TABLES;）导入数据库文件（source sql文件路径）
+    	sql查询实例： select * from company c left join food f on c.id = f.companyId;
+	插入实例： 
+	为表增加字段：alter table food add weekDay varchar(20);
+    e.导入数据库文件，按上述方法创建一个数据库，并use，之后source sql文件路径即可,导出数据库：mysqldump -u 用户名 -p 数据库名 > 导出的文件名
+    PS：有个appServ,除了mysql外还包含一个可视化的数据库界面phpmyadmin，有兴趣可以安装一下http://appserv.en.uptodown.com/windows/
+
+

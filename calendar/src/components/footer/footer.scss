@@ -1,0 +1,17 @@
+.footer{
+  width:100%;
+  overflow: hidden;
+  position: fixed;
+  bottom:0;
+  background-color: #F7F7F7;
+  display: -webkit-flex; /* Safari */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  li{
+    width:35%;
+    height:40px;
+    line-height: 40px;
+    border:1px solid #333;
+  }
+}
